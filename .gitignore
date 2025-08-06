@@ -22,5 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 package-lock.json
-config/admin.confi.ts
-config/firebase.config.ts
+src/config/admin.confi.ts
+src/config/firebase.config.ts
