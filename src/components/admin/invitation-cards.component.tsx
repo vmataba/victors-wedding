@@ -134,7 +134,7 @@ export const InvitationCards = () => {
 
     const handleViewCard = (card: InvitationCard) => {
         // Open the invitation card in a new tab
-        const url = `/victors-wedding/invitation-card/${card.id}`;
+        const url = `/victors-wedding/invitation-card/${btoa(card.id)}`;
         window.open(url, '_blank');
     };
 

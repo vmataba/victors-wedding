@@ -18,7 +18,7 @@ export const InvitationCard = () => {
         if (!id) {
             return;
         }
-        viewInvitationCard(id).then(card  => {
+        viewInvitationCard(atob(id)).then(card  => {
             if (!card){
                 return;
             }
@@ -45,7 +45,10 @@ export const InvitationCard = () => {
     }
 
     const navigateToPledges = () => {
-        navigate('/pledges/' + id);
+        if (!id) {
+            return;
+        }
+        navigate('/pledges/' +  id);
     }
 
 

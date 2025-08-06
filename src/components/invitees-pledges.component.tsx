@@ -106,7 +106,7 @@ export const InviteePledges = () => {
         if (!cardId) {
             return;
         }
-        viewInvitationCard(cardId).then(card => {
+        viewInvitationCard(atob(cardId)).then(card => {
             if (card) {
                 setNewPledge({
                     ...newPledge,
