@@ -509,7 +509,7 @@ export const InviteePledges = () => {
             {/* Search Bar */}
             <Paper
                 sx={{
-                    p: 2,
+                    p: {xs: 1.5, sm: 2},
                     mb: 3,
                     background: `linear-gradient(135deg, ${alpha('#FFFFFF', 0.9)}, ${alpha('#FFFFFF', 0.7)})`,
                     backdropFilter: 'blur(10px)',
@@ -539,39 +539,8 @@ export const InviteePledges = () => {
             </Paper>
 
             {/* Pledges List */}
-            <Paper
-                elevation={0}
-                sx={{
-                    background: `linear-gradient(135deg, ${alpha('#FFFFFF', 0.9)}, ${alpha('#FFFFFF', 0.7)})`,
-                    backdropFilter: 'blur(10px)',
-                    border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    position: 'relative',
-                    boxShadow: `0 10px 20px ${alpha(theme.palette.primary.dark, 0.08)}`
-                }}>
-                {/* Decorative elements */}
-                <Box sx={{
-                    position: 'absolute',
-                    left: 20,
-                    top: 20,
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, ${alpha(theme.palette.primary.light, 0.1)}, transparent 70%)`,
-                    zIndex: 0
-                }}/>
-                <Box sx={{
-                    position: 'absolute',
-                    right: 60,
-                    bottom: 40,
-                    width: '120px',
-                    height: '120px',
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, ${alpha(theme.palette.secondary.light, 0.1)}, transparent 70%)`,
-                    zIndex: 0
-                }}/>
-                {/* Floating Action Button at the top right of pledges list */}
+            {/* Floating Action Button */}
+            <Box sx={{ position: 'relative', mb: 3 }}>
                 <Fab
                     color="primary"
                     aria-label="add pledge"
@@ -579,7 +548,7 @@ export const InviteePledges = () => {
                     size="small"
                     sx={{
                         position: 'absolute',
-                        top: {xs: 16, sm: 20},
+                        top: {xs: -16, sm: -20},
                         right: {xs: 16, sm: 24},
                         background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                         '&:hover': {
@@ -593,18 +562,26 @@ export const InviteePledges = () => {
                 >
                     <AddIcon fontSize="small"/>
                 </Fab>
-
-                <Box sx={{
-                    p: {xs: 2, sm: 3},
-                    pt: {xs: 4, sm: 5},  // Added extra top padding to accommodate the FAB
-                    borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                }}>
+            </Box>
+            
+            {/* Pledge Statistics */}
+            <Box sx={{
+                p: {xs: 2, sm: 3},
+                mb: 3,
+                display: 'flex',
+                flexDirection: {xs: 'column', sm: 'row'},
+                justifyContent: 'space-between',
+                alignItems: {xs: 'flex-start', sm: 'center'},
+                gap: 2,
+                bgcolor: 'transparent'
+            }}>
                     <Box sx={{
                         display: 'flex',
                         flexDirection: {xs: 'column', sm: 'row'},
-                        alignItems: {xs: 'flex-start', sm: 'center'},
-                        justifyContent: 'space-between',
-                        gap: {xs: 1, sm: 2}
+                        gap: 1.5,
+                        alignItems: {xs: 'stretch', sm: 'center'},
+                        width: {xs: '100%', sm: 'auto'},
+                        mt: {md: 4, sm: 0}
                     }}>
                         <Typography
                             variant="body1"
@@ -625,7 +602,7 @@ export const InviteePledges = () => {
                             mt: {md: 4, sm: 0}
                         }}>
                             <Box sx={{display: 'flex', alignItems: 'center'}}>
-                                <Typography variant="body2" sx={{mr: 1, whiteSpace: 'nowrap'}}>
+                                <Typography variant="body2" sx={{mr: 1, whiteSpace: 'nowrap', fontSize: {xs: '0.8rem', sm: '0.875rem'}}}>
                                     Total Pledged:
                                 </Typography>
                                 <Chip
@@ -637,7 +614,7 @@ export const InviteePledges = () => {
                                 />
                             </Box>
                             <Box sx={{display: 'flex', alignItems: 'center'}}>
-                                <Typography variant="body2" sx={{mr: 1, whiteSpace: 'nowrap'}}>
+                                <Typography variant="body2" sx={{mr: 1, whiteSpace: 'nowrap', fontSize: {xs: '0.8rem', sm: '0.875rem'}}}>
                                     Total Paid:
                                 </Typography>
                                 <Chip
@@ -671,8 +648,8 @@ export const InviteePledges = () => {
                     </Box>
                 </Box>
 
-                <Box sx={{p: {xs: 1, sm: 2}, display: 'grid', gap: {xs: 1, sm: 1.5}, width: '100%'}}>
-                    {filteredPledges.map((pledge, index) => {
+            <Box sx={{p: {xs: 1, sm: 2}, display: 'grid', gap: {xs: 2, sm: 2}, width: '100%'}}>
+                {filteredPledges.map((pledge, index) => {
                         const progressPercentage = getProgressPercentage(pledge.paidAmount || 0, pledge.pledgeAmount || 0);
                         const progressColor = getProgressColor(progressPercentage);
 
@@ -709,21 +686,29 @@ export const InviteePledges = () => {
                                     borderBottomLeftRadius: 1.5
                                 }}/>
 
-                                <Box sx={{display: 'flex', alignItems: 'center', gap: 2, width: '100%'}}>
+                                <Box sx={{
+                                    display: 'flex', 
+                                    flexDirection: {xs: 'column', sm: 'row'}, 
+                                    alignItems: {xs: 'flex-start', sm: 'center'}, 
+                                    gap: {xs: 2, sm: 2}, 
+                                    width: '100%',
+                                    p: {xs: 2, sm: 2}
+                                }}>
                                     {/* Avatar and Name */}
-                                    <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5, flex: '0 0 auto'}}>
+                                    <Box sx={{display: 'flex', alignItems: 'center', gap: 2, flex: {xs: '1 1 100%', sm: '0 0 auto'}, width: {xs: '100%', sm: 'auto'}, pb: {xs: 1, sm: 0}}}>
                                         <Avatar
                                             sx={{
                                                 background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                                                width: 36,
-                                                height: 36,
-                                                fontSize: '0.9rem',
-                                                fontWeight: 'bold'
+                                                width: {xs: 40, sm: 36},
+                                                height: {xs: 40, sm: 36},
+                                                fontSize: {xs: '1rem', sm: '0.9rem'},
+                                                fontWeight: 'bold',
+                                                boxShadow: {xs: `0 2px 8px ${alpha(theme.palette.primary.main, 0.3)}`, sm: 'none'}
                                             }}
                                         >
                                             {pledge.name.charAt(0).toUpperCase()}
                                         </Avatar>
-                                        <Box sx={{minWidth: 0}}>
+                                        <Box sx={{minWidth: 0, flex: 1}}>
                                             <Typography
                                                 variant="subtitle2"
                                                 sx={{
@@ -776,56 +761,88 @@ export const InviteePledges = () => {
                                         </Box>
                                     </Box>
 
-                                    {/* Pledge Amount */}
-                                    <Box sx={{flex: '0 0 auto', textAlign: 'right', minWidth: 100}}>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                fontWeight: 600,
-                                                color: theme.palette.primary.main,
-                                                fontSize: '0.9rem',
-                                                lineHeight: 1.2
-                                            }}
-                                        >
-                                            {pledge.pledgeAmount?.toLocaleString('en-US', {
-                                                style: 'currency',
-                                                currency: 'TZS',
-                                                minimumFractionDigits: 0,
-                                                maximumFractionDigits: 0
-                                            }) || 'TZS 0'}
-                                        </Typography>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                fontSize: '0.7rem',
-                                                color: alpha(theme.palette.text.secondary, 0.7)
-                                            }}
-                                        >
-                                            Pledged
-                                        </Typography>
+                                    {/* Pledge Amount and Payment Info - Row on mobile */}
+                                    <Box sx={{display: 'flex', flexDirection: {xs: 'row', sm: 'row'}, alignItems: 'center', justifyContent: 'space-between', gap: {xs: 2, sm: 2}, width: {xs: '100%', sm: 'auto'}, mt: {xs: 1, sm: 0}}}>
+                                        {/* Pledge Amount */}
+                                        <Box sx={{flex: '1 1 auto', textAlign: {xs: 'left', sm: 'right'}, minWidth: {xs: 'auto', sm: 100}}}>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontWeight: 600,
+                                                    color: theme.palette.primary.main,
+                                                    fontSize: {xs: '1rem', sm: '0.9rem'},
+                                                    lineHeight: 1.2
+                                                }}
+                                            >
+                                                {pledge.pledgeAmount?.toLocaleString('en-US', {
+                                                    style: 'currency',
+                                                    currency: 'TZS',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 0
+                                                }) || 'TZS 0'}
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                sx={{
+                                                    fontSize: '0.7rem',
+                                                    color: alpha(theme.palette.text.secondary, 0.7)
+                                                }}
+                                            >
+                                                Pledged
+                                            </Typography>
+                                        </Box>
+                                        
+                                        {/* Paid Amount - Show on mobile */}
+                                        <Box sx={{display: {xs: 'block', sm: 'none'}, flex: '1 1 auto', textAlign: 'right'}}>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontWeight: 600,
+                                                    color: theme.palette.success.main,
+                                                    fontSize: {xs: '1rem', sm: '0.9rem'},
+                                                    lineHeight: 1.2
+                                                }}
+                                            >
+                                                {(pledge.paidAmount || 0).toLocaleString('en-US', {
+                                                    style: 'currency',
+                                                    currency: 'TZS',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 0
+                                                })}
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                sx={{
+                                                    fontSize: '0.7rem',
+                                                    color: alpha(theme.palette.text.secondary, 0.7)
+                                                }}
+                                            >
+                                                Paid
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
                                     {/* Progress and Actions */}
-                                    <Box sx={{flex: 1, minWidth: 120}}>
+                                    <Box sx={{flex: 1, minWidth: {xs: '100%', sm: 120}, mt: {xs: 2, sm: 0}}}>
                                         <Box sx={{
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
-                                            mb: 0.5
+                                            mb: 0.8
                                         }}>
-                                            <Typography
-                                                variant="caption"
-                                                sx={{
-                                                    fontWeight: 500,
-                                                    fontSize: '0.75rem',
-                                                    color: progressColor === 'success' ? theme.palette.success.main :
-                                                        progressColor === 'warning' ? theme.palette.warning.main :
-                                                            theme.palette.error.main
-                                                }}
-                                            >
-                                                {Math.round(progressPercentage)}% paid
-                                            </Typography>
-                                            <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                                            <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                                <Typography
+                                                    variant="caption"
+                                                    sx={{
+                                                        fontWeight: 500,
+                                                        fontSize: {xs: '0.8rem', sm: '0.75rem'},
+                                                        color: progressColor === 'success' ? theme.palette.success.main :
+                                                            progressColor === 'warning' ? theme.palette.warning.main :
+                                                                theme.palette.error.main
+                                                    }}
+                                                >
+                                                    {Math.round(progressPercentage)}% paid
+                                                </Typography>
                                                 {progressPercentage >= 100 && (
                                                     <CheckCircleIcon
                                                         sx={{
@@ -834,6 +851,8 @@ export const InviteePledges = () => {
                                                         }}
                                                     />
                                                 )}
+                                            </Box>
+                                            <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
                                                 <IconButton
                                                     size="small"
                                                     aria-label="edit pledge"
@@ -842,15 +861,15 @@ export const InviteePledges = () => {
                                                         handleEditPledge(pledge);
                                                     }}
                                                     sx={{
-                                                        width: 28,
-                                                        height: 28,
+                                                        width: {xs: 32, sm: 28},
+                                                        height: {xs: 32, sm: 28},
                                                         bgcolor: alpha(theme.palette.primary.main, 0.08),
                                                         '&:hover': {
                                                             bgcolor: alpha(theme.palette.primary.main, 0.15)
                                                         }
                                                     }}
                                                 >
-                                                    <EditIcon sx={{fontSize: '0.8rem'}}/>
+                                                    <EditIcon sx={{fontSize: {xs: '0.9rem', sm: '0.8rem'}}}/>
                                                 </IconButton>
 
                                                 {isAdmin && (
@@ -863,15 +882,15 @@ export const InviteePledges = () => {
                                                             setPaymentDialog(true);
                                                         }}
                                                         sx={{
-                                                            width: 28,
-                                                            height: 28,
+                                                            width: {xs: 32, sm: 28},
+                                                            height: {xs: 32, sm: 28},
                                                             bgcolor: alpha(theme.palette.success.main, 0.08),
                                                             '&:hover': {
                                                                 bgcolor: alpha(theme.palette.success.main, 0.15)
                                                             }
                                                         }}
                                                     >
-                                                        <PaymentIcon sx={{fontSize: '0.8rem'}}/>
+                                                        <PaymentIcon sx={{fontSize: {xs: '0.9rem', sm: '0.8rem'}}}/>
                                                     </IconButton>
                                                 )}
                                             </Box>
@@ -881,21 +900,22 @@ export const InviteePledges = () => {
                                             value={Math.min(progressPercentage, 100)}
                                             color={progressColor}
                                             sx={{
-                                                height: 6,
+                                                height: {xs: 8, sm: 6},
                                                 borderRadius: 3,
                                                 backgroundColor: alpha(theme.palette.grey[300], 0.2),
                                                 '& .MuiLinearProgress-bar': {
                                                     borderRadius: 3
-                                                }
+                                                },
+                                                boxShadow: {xs: `0 1px 3px ${alpha(theme.palette.common.black, 0.1)}`, sm: 'none'}
                                             }}
                                         />
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                display: 'block',
+                                                display: {xs: 'none', sm: 'block'},
                                                 textAlign: 'right',
-                                                mt: 0.3,
-                                                fontSize: '0.65rem',
+                                                mt: 0.5,
+                                                fontSize: '0.7rem',
                                                 color: alpha(theme.palette.text.secondary, 0.7)
                                             }}
                                         >
@@ -911,9 +931,9 @@ export const InviteePledges = () => {
                             </Paper>
                         );
                     })}
-                </Box>
+            </Box>
 
-                {filteredPledges.length === 0 && (
+            {filteredPledges.length === 0 && (
                     <Box sx={{p: 8, textAlign: 'center'}}>
                         <Box
                             sx={{
@@ -967,7 +987,6 @@ export const InviteePledges = () => {
                         '100%': {transform: 'scale(1)', opacity: 0.8}
                     }
                 }}/>
-            </Paper>
 
 
             {/* Add Pledge Dialog */}

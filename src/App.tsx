@@ -23,7 +23,7 @@ const AppWrapper = (props: any) => {
             navigate(path);
         }
     });
-    return <div>{props.children}</div>
+    return <>{props.children}</>
 }
 
 
@@ -34,7 +34,7 @@ function App() {
         <AuthProvider>
             <BrowserRouter basename="/victors-wedding">
                 <AppWrapper>
-                    <div className="App">
+                    <div className="app">
                         <Routes>
                             {/* Guest Routes */}
                             <Route path="/" element={<GuestHome/>}/>
