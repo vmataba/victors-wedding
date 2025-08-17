@@ -10,6 +10,7 @@ import {AdminsContent} from './components/admin/admins-content.component';
 import {InvitationCards} from './components/admin/invitation-cards.component';
 import {InviteesReport} from './components/admin/invitees-report.component';
 import {InviteePledges} from './components/invitees-pledges.component';
+import MetaTags from './components/MetaTags';
 import './App.css';
 import {InvitationCard} from "./components/invitation-card/invitation-card.component";
 
@@ -34,6 +35,12 @@ function App() {
         <AuthProvider>
             <BrowserRouter basename="/victors-wedding">
                 <AppWrapper>
+                    {/* Default meta tags for the main page */}
+                    <MetaTags 
+                      title="Victor's Wedding Invitation"
+                      description="You're invited to celebrate our special day"
+                      image="images/social/preview.jpg"
+                    />
                     <div className="app">
                         <Routes>
                             {/* Guest Routes */}

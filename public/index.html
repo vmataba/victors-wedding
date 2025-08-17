@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -12,6 +12,59 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
+    
+    <!-- Essential Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor's Wedding" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://vmataba.github.io/victors-wedding/" />
+    <meta property="og:title" content="Victor's Wedding Celebration" />
+    <meta property="og:description" content="You're invited to celebrate with us on our special day. Join Victor's wedding celebration." />
+    <meta property="og:image" content="https://vmataba.github.io/victors-wedding/images/background.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Victor's Wedding Invitation" />
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@victorswedding" />
+    <meta name="twitter:url" content="https://vmataba.github.io/victors-wedding/" />
+    <meta name="twitter:title" content="Victor's Wedding Celebration" />
+    <meta name="twitter:description" content="You're invited to celebrate with us on our special day. Join Victor's wedding celebration." />
+    <meta name="twitter:image" content="https://vmataba.github.io/victors-wedding/images/background.jpg" />
+    <meta name="twitter:image:alt" content="Victor's Wedding Invitation" />
+    
+    <!-- LinkedIn Specific -->
+    <meta property="linkedin:title" content="Victor's Wedding Invitation">
+    <meta property="linkedin:description" content="You're invited to celebrate our special day">
+    <meta property="linkedin:image" content="https://vmataba.github.io/victors-wedding/images/background.jpg">
+    
+    <!-- Pinterest Specific -->
+    <meta property="pinterest:description" content="You're invited to celebrate our special day">
+    <meta property="pinterest:image" content="https://vmataba.github.io/victors-wedding/images/background.jpg">
+
+    <!-- Schema.org for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Victor's Wedding",
+      "startDate": "2025-08-20T10:00",
+      "endDate": "2025-08-20T18:00",
+      "description": "You're invited to celebrate our special day",
+      "image": "https://vmataba.github.io/victors-wedding/images/background.jpg",
+      "location": {
+        "@type": "Place",
+        "name": "Wedding Venue",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dar es Salaam",
+          "addressRegion": "Tanzania"
+        }
+      }
+    }
+    </script>
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

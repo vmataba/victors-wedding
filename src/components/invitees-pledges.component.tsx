@@ -4,6 +4,7 @@ import {loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.
 import {useAuth} from "../contexts/AuthContext";
 import {links} from "../config/links.config";
 import {viewInvitationCard} from '../services/invitation-card.service';
+import MetaTags from './MetaTags';
 // Import the proper Material UI Grid v5 component
 import {
     Alert,
@@ -386,6 +387,13 @@ export const InviteePledges = () => {
             py: 4,
             px: {xs: 2, sm: 3, md: 4} // Responsive padding
         }}>
+            {/* Dynamic meta tags for sharing the pledges page */}
+            <MetaTags
+                title={cardId ? "Wedding Pledge - RSVP" : "Victor's Wedding - Pledges"}
+                description={cardId ? "RSVP and make a pledge for Victor's wedding celebration" : "Support Victor's wedding celebration with your pledge"}
+                image="images/social/preview.jpg"
+            />
+            
             {/* Background with wedding theme */}
             <Box
                 sx={{

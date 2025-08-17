@@ -2,6 +2,7 @@ import './invitation-card.component.css'
 import {useEffect, useState} from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import {viewInvitationCard} from "../../services/invitation-card.service";
+import MetaTags from "../MetaTags";
 
 export const InvitationCard = () => {
 
@@ -48,51 +49,60 @@ export const InvitationCard = () => {
         if (!id) {
             return;
         }
-        navigate('/pledges/' +  id);
+        navigate(`/pledges/${id}`);
     }
 
+    return (
+        <div className="invitation-card">
+            {/* Dynamic meta tags for sharing this specific invitation card */}
+            <MetaTags
+                title={`${inviteeName}'s Wedding Invitation`}
+                description={`Dear ${inviteeName}, you're invited to Victor's wedding celebration`}
+                image="images/social/preview.jpg"
+                url={`https://vmataba.github.io/victors-wedding/invitation-card/${id}`}
+            />
+            <div className="card-container">
+                <div className="card">
+                    <img src={process.env.PUBLIC_URL + '/images/11.gif'} alt="flower-top" className="flowers-top"/>
+                    <img src={process.env.PUBLIC_URL + '/images/12.gif'} alt="flower-bottom" className="flowers-bottom"/>
 
-    return <div className="card-container">
-        <div className="card">
-            <img src={process.env.PUBLIC_URL + '/images/11.gif'} alt="flower-top" className="flowers-top"/>
-            <img src={process.env.PUBLIC_URL + '/images/12.gif'} alt="flower-bottom" className="flowers-bottom"/>
+                    <div className="header">Mwaliko wa Harusi</div>
 
-            <div className="header">Mwaliko wa Harusi</div>
+                    <div className="content">
+                        Familia ya <strong>Mr & Mrs Natalis Mataba</strong> wa Maswa Simiyu wanayo furaha
+                        kukutaarifu/kuwataarifu <br/>
+                        <div className="recipient-box" id="inviteeName">
+                            {inviteeName}
+                        </div>
+                        Kuwa kijana wao mpendwa <br/>
+                        <span className="highlight">Victor Mataba</span><br/><br/> Anatarajia kufunga ndoa takatifu
+                        tarehe <strong>15/11/2025</strong> Dar es Salaam.<br/> Hivyo ukiwa ndugu jamaa na rafiki wa karibu na
+                        familia hii, <br/> tunaomba mchango wako wa hali
+                        na mali kuhakikisha shughuli hii inafanikiwa.<br/> Ili kufanikisha shughuli hii muhimu karibu kwa mchango/ahadi.
+                    </div>
 
-            <div className="content">
-                Familia ya <strong>Mr & Mrs Natalis Mataba</strong> wa Maswa Simiyu wanayo furaha
-                kukutaarifu/kuwataarifu <br/>
-                <div className="recipient-box" id="inviteeName">
-                    {inviteeName}
+                    <div className="contacts">
+                        <div className="copyable" onClick={() => copyToClipboard('0657471721')}>
+                            0657471721 (YAS/TIGOPESA) - VICTOR NATALIS MATABA
+                        </div>
+                        <div className="copyable" onClick={() => copyToClipboard('0762228745')}>
+                            0762228745 (MPESA) - FRANK MATABA
+                        </div>
+                        <div className="copyable" onClick={() => copyToClipboard('20810055844')}>
+                            20810055844 (NMB) - VICTOR NATALIS MATABA
+                        </div>
+                    </div>
+
+                    <button className="pledge-button" onClick={navigateToPledges}>
+                        Pledge Now
+                    </button>
                 </div>
-                Kuwa kijana wao mpendwa <br/>
-                <span className="highlight">Victor Mataba</span><br/><br/> Anatarajia kufunga ndoa takatifu
-                tarehe <strong>15/11/2025</strong> Dar es Salaam.<br/> Hivyo ukiwa ndugu jamaa na rafiki wa karibu na
-                familia hii, <br/> tunaomba mchango wako wa hali
-                na mali kuhakikisha shughuli hii inafanikiwa.<br/> Ili kufanikisha shughuli hii muhimu karibu kwa mchango/ahadi.
+
+                {showToast && <div id="toast" onClick={hideToast}>
+                    <img src="/images/account-balance.svg" alt="cash"/>
+                    <span id="toastMessage">{toastMessage}</span>
+                </div>}
             </div>
-
-            <div className="contacts">
-                <div className="copyable" onClick={() => copyToClipboard('0657471721')}>
-                    0657471721 (YAS/TIGOPESA) - VICTOR NATALIS MATABA
-                </div>
-                <div className="copyable" onClick={() => copyToClipboard('0762228745')}>
-                    0762228745 (MPESA) - FRANK MATABA
-                </div>
-                <div className="copyable" onClick={() => copyToClipboard('20810055844')}>
-                    20810055844 (NMB) - VICTOR NATALIS MATABA
-                </div>
-            </div>
-
-            <button className="pledge-button" onClick={navigateToPledges}>
-                Pledge Now
-            </button>
         </div>
-
-        {showToast && <div id="toast" onClick={hideToast}>
-            <img src="/images/account-balance.svg" alt="cash"/>
-            <span id="toastMessage">{toastMessage}</span>
-        </div>}
-    </div>
-
+    );
 };
