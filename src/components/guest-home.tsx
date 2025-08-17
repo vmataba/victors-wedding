@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Card, CardContent, Chip, Container, Stack, Typography} from '@mui/material';
-import {AdminPanelSettings as AdminIcon, CopyAll as CopyAllIcon, Favorite as FavoriteIcon} from '@mui/icons-material';
+import {AdminPanelSettings as AdminIcon, CopyAll as CopyAllIcon, Favorite as FavoriteIcon, WhatsApp as WhatsAppIcon} from '@mui/icons-material';
 import './guest-home.css';
 import accountBalanceIcon from '../assets/images/account-balance.svg';
 
@@ -272,6 +272,37 @@ export const GuestHome = () => {
                                     }}
                                 >
                                     View & Add Pledges
+                                </Button>
+                                <Button
+                                    component="a"
+                                    href="https://chat.whatsapp.com/invite/victorandestherwedding"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    variant="outlined"
+                                    size="large"
+                                    startIcon={<WhatsAppIcon />}
+                                    sx={{
+                                        py: {xs: 1.3, sm: 1.8},
+                                        px: {xs: 3, sm: 4},
+                                        fontSize: {xs: '0.9rem', sm: '1rem'},
+                                        fontWeight: 500,
+                                        textTransform: 'none',
+                                        borderRadius: 3,
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        backdropFilter: 'blur(5px)',
+                                        color: '#128C7E',
+                                        borderColor: '#128C7E',
+                                        minWidth: {xs: '180px', sm: 'auto'},
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(18, 140, 126, 0.05)',
+                                            borderColor: '#25D366',
+                                            transform: 'translateY(-1px)',
+                                            boxShadow: '0 4px 12px rgba(37, 211, 102, 0.2)'
+                                        },
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                >
+                                    Join us on WhatsApp
                                 </Button>
                             </Stack>
                         </CardContent>
