@@ -4,6 +4,7 @@ import {Box, Button, Card, CardContent, Chip, Container, Stack, Typography} from
 import {AdminPanelSettings as AdminIcon, CopyAll as CopyAllIcon, Favorite as FavoriteIcon, WhatsApp as WhatsAppIcon} from '@mui/icons-material';
 import './guest-home.css';
 import accountBalanceIcon from '../assets/images/account-balance.svg';
+import {links} from "../config/links.config";
 
 interface PaymentMethodProps {
     method: string;
@@ -394,7 +395,7 @@ export const GuestHome = () => {
                                 </Button>
                                 <Button
                                     component="a"
-                                    href="https://chat.whatsapp.com/invite/victorandestherwedding"
+                                    href={links.whatsapp}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     variant="outlined"
