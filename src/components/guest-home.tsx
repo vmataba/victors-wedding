@@ -163,8 +163,8 @@ export const GuestHome = () => {
                         elevation={24}
                         className="hero-card"
                         sx={{
-                            backdropFilter: 'blur(20px)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                            backdropFilter: 'blur(5px)',
+                            backgroundColor: 'rgba(255, 255, 255, 0)',
                             border: '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: 6,
                             overflow: 'hidden',
@@ -176,7 +176,7 @@ export const GuestHome = () => {
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%)',
                                 zIndex: -1
                             }
                         }}

@@ -472,14 +472,15 @@
 }
 
 .payment-instructions {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
     max-width: 600px;
     margin: 2rem auto;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .payment-methods {
