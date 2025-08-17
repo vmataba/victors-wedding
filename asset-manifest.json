@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/victors-wedding/static/css/main.cbb879c3.css",
-    "main.js": "/victors-wedding/static/js/main.5833933a.js",
+    "main.js": "/victors-wedding/static/js/main.070efd59.js",
     "static/js/453.c505c41c.chunk.js": "/victors-wedding/static/js/453.c505c41c.chunk.js",
     "static/media/great-vibes.ttf": "/victors-wedding/static/media/great-vibes.f51f1a4f2cd0c9611249.ttf",
     "static/media/background.jpg": "/victors-wedding/static/media/background.cb7fe288de3acab1bfc8.jpg",
     "index.html": "/victors-wedding/index.html",
     "main.cbb879c3.css.map": "/victors-wedding/static/css/main.cbb879c3.css.map",
-    "main.5833933a.js.map": "/victors-wedding/static/js/main.5833933a.js.map",
+    "main.070efd59.js.map": "/victors-wedding/static/js/main.070efd59.js.map",
     "453.c505c41c.chunk.js.map": "/victors-wedding/static/js/453.c505c41c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cbb879c3.css",
-    "static/js/main.5833933a.js"
+    "static/js/main.070efd59.js"
   ]
 }
