@@ -26,7 +26,6 @@ export const InvitationCard = () => {
             setInviteeName(card.name);
         })
     });
-
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text).then(() => {
             setToastMessage("Copied: " + text);
