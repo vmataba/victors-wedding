@@ -182,30 +182,92 @@ export const GuestHome = () => {
                         }}
                     >
                         <CardContent sx={{p: {xs: 3, sm: 4, md: 6}, textAlign: 'center'}}>
-                            <Typography
-                                variant="h2"
-                                component="h1"
-                                gutterBottom
-                                className="hero-title"
+                            <Box 
                                 sx={{
-                                    fontWeight: 450,
-                                    fontSize: {xs: '2rem', sm: '2.5rem', md: '3.5rem'},
-                                    background: 'linear-gradient(45deg, #2C3E50, #34495E, #1A252F)',
-                                    backgroundClip: 'text',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    mb: 2,
-                                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-                                    filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+                                    position: 'relative',
+                                    textAlign: 'center',
+                                    mb: 3,
+                                    '&::before, &::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        width: {xs: '40px', sm: '60px', md: '80px'},
+                                        height: {xs: '40px', sm: '60px', md: '80px'},
+                                        opacity: 0.6,
+                                        zIndex: -1
+                                    },
+                                    '&::before': {
+                                        top: {xs: '-10px', md: '-15px'},
+                                        left: {xs: '5px', sm: '20px', md: '40px'},
+                                        border: '2px solid rgba(192, 57, 43, 0.3)',
+                                        borderRight: 'none',
+                                        borderBottom: 'none',
+                                        transform: 'rotate(0deg)'
+                                    },
+                                    '&::after': {
+                                        bottom: {xs: '-10px', md: '-15px'},
+                                        right: {xs: '5px', sm: '20px', md: '40px'},
+                                        border: '2px solid rgba(52, 73, 94, 0.3)',
+                                        borderLeft: 'none',
+                                        borderTop: 'none',
+                                        transform: 'rotate(0deg)'
+                                    }
                                 }}
                             >
-                                Welcome to Victor & Esther's Wedding
-                            </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        mb: 1,
+                                        mt: 1
+                                    }}
+                                >
+                                    <Box sx={{ 
+                                        width: {xs: '100px', sm: '150px', md: '180px'}, 
+                                        height: '2px', 
+                                        background: 'linear-gradient(90deg, rgba(52,73,94,0) 0%, rgba(52,73,94,0.7) 50%, rgba(52,73,94,0) 100%)' 
+                                    }} />
+                                </Box>
 
+                                <Typography
+                                    variant="h2"
+                                    component="h1"
+                                    gutterBottom
+                                    className="hero-title"
+                                    sx={{
+                                        fontWeight: 450,
+                                        fontSize: {xs: '2rem', sm: '2.5rem', md: '3.5rem'},
+                                        background: 'linear-gradient(45deg, #2C3E50, #34495E, #1A252F)',
+                                        backgroundClip: 'text',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        mb: 1,
+                                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+                                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
+                                        position: 'relative',
+                                        letterSpacing: '1px',
+                                        padding: {xs: '0 10px', md: '0 20px'}
+                                    }}
+                                >
+                                    Welcome to Victor & Esther's Wedding
+                                </Typography>
+                                
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    mb: 1 
+                                }}>
+                                    <span style={{ fontSize: '1rem', color: '#C0392B' }}>♥</span>
+                                    <span style={{ width: '80px', height: '1px', background: 'linear-gradient(90deg, rgba(192,57,43,0) 0%, rgba(192,57,43,0.7) 50%, rgba(192,57,43,0) 100%)' }}></span>
+                                    <span style={{ fontSize: '1.4rem', margin: '0 10px' }}>✦</span>
+                                    <span style={{ width: '80px', height: '1px', background: 'linear-gradient(90deg, rgba(52,73,94,0) 0%, rgba(52,73,94,0.7) 50%, rgba(52,73,94,0) 100%)' }}></span>
+                                    <span style={{ fontSize: '1rem', color: '#C0392B' }}>♥</span>
+                                </Box>
+                            </Box>
                             <Typography
                                 variant="h5"
                                 sx={{
-                                    mb: {xs: 3, md: 4},
+                                    mb: {xs: 1, md: 2},
                                     fontSize: {xs: '1.1rem', sm: '1.3rem', md: '1.5rem'},
                                     fontWeight: 400,
                                     color: '#34495E',
@@ -214,6 +276,63 @@ export const GuestHome = () => {
                                 }}>
                                 Join us in celebrating this special day
                             </Typography>
+                            
+                            <Box 
+                                sx={{
+                                    mb: {xs: 3, md: 4},
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    className="wedding-date"
+                                    sx={{
+                                        fontSize: {xs: '1.2rem', sm: '1.4rem', md: '1.6rem'},
+                                        fontWeight: 500,
+                                        color: '#34495E',
+                                        textAlign: 'center',
+                                        position: 'relative',
+                                        display: 'inline-block',
+                                        padding: '0.5rem 2rem',
+                                        '&::before, &::after': {
+                                            content: '""',
+                                            position: 'absolute',
+                                            top: '50%',
+                                            width: '30px',
+                                            height: '2px',
+                                            background: 'linear-gradient(90deg, rgba(52,73,94,0) 0%, rgba(52,73,94,1) 100%)'
+                                        },
+                                        '&::before': {
+                                            left: 0,
+                                            transform: 'translateY(-50%)'
+                                        },
+                                        '&::after': {
+                                            right: 0,
+                                            transform: 'translateY(-50%) rotate(180deg)'
+                                        }
+                                    }}
+                                >
+                                    15/11/2025
+                                </Typography>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    mt: 1,
+                                    '& svg': {
+                                        mx: 1,
+                                        color: '#C0392B'
+                                    }
+                                }}>
+                                    <span style={{ fontSize: '1.2rem' }}>✦</span>
+                                    <span style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, rgba(192,57,43,0) 0%, rgba(192,57,43,1) 50%, rgba(192,57,43,0) 100%)' }}></span>
+                                    <span style={{ fontSize: '1.2rem', color: '#C0392B' }}>♥</span>
+                                    <span style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, rgba(192,57,43,0) 0%, rgba(192,57,43,1) 50%, rgba(192,57,43,0) 100%)' }}></span>
+                                    <span style={{ fontSize: '1.2rem' }}>✦</span>
+                                </Box>
+                            </Box>
+                            
                             <div className="payment-instructions">
                                 <Typography variant={'h5'} sx={{
                                     mb: {xs: 3, md: 4},
