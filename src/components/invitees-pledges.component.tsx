@@ -892,7 +892,7 @@ export const InviteePledges = () => {
                                             )}
                                         </Box>
                                         <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
-                                            <IconButton
+                                            {isAdmin && <IconButton
                                                 size="small"
                                                 aria-label="edit pledge"
                                                 onClick={(e) => {
@@ -909,7 +909,7 @@ export const InviteePledges = () => {
                                                 }}
                                             >
                                                 <EditIcon sx={{fontSize: {xs: '0.9rem', sm: '0.8rem'}}}/>
-                                            </IconButton>
+                                            </IconButton>}
 
                                             {isAdmin && (
                                                 <IconButton
