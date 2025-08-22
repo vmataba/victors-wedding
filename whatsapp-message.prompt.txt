@@ -1,0 +1,41 @@
+
+Implement the function generateWhatsAppMessage() in services/whatsapp-message.service.ts
+
+to generate a text message for whatsapp using the following template:
+
+Victor Mataba's Wedding
+------------------------
+Date : 15/11/2025
+------------------------
+Next Committee Meeting: 30/08/2025
+------------------------
+Payment Instructions
+------------------------
+1. M-PESA : 0722552255 - FRANK MATABA
+2. TIGO-PESA/YAS : 0657471721 - VICTOR NATALIS MATABA
+3. NMB : 20810055844 - VICTOR NATALIS MATABA
+
+
+Pledges & Gifts
+
+1. Mirabel Mataba
+   Pledge : TZS 500,000
+   Paid : TZS 300,000
+   Balance : TZS 200,000
+   Status : PARTIAL PAID
+-----------------------------------------------------
+2. Mr. Natalis Mataba
+   Pledge : TZS 2,000,000
+   Paid : TZS 0.0
+   Balance : TZS 2,000,000
+   Status : NOT PAID
+------------------------------------------------------
+
+
+
+And alike. Query that information using the function : loadInvitees defined in services/invitee.service.ts
+
+Ensure you use whatsapp emojis to make the message more engaging, you can also improve this template to make it better, lastly
+
+append base link to the message
+

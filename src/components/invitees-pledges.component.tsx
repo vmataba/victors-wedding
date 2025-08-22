@@ -1,10 +1,11 @@
 import {Invitee} from "../models/invitee.model";
 import {useEffect, useMemo, useState} from "react";
-import {generateWhatsAppMessage, loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.service";
+import {loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.service";
 import {useAuth} from "../contexts/AuthContext";
 import {links} from "../config/links.config";
 import {viewInvitationCard} from '../services/invitation-card.service';
 import MetaTags from './MetaTags';
+import {generateWhatsAppMessage} from '../services/whatsapp-message.service';
 
 
 import {
@@ -51,7 +52,6 @@ import {useParams} from "react-router-dom";
 import whatsappIcon from '../assets/images/whatsapp-icon.svg';
 import whatsappBackground from '../assets/images/whatsapp-bg.png'
 import backgroundImage from '../assets/images/background.jpg';
-import {getEnabledCategories} from "node:trace_events";
 
 
 // Override Material UI Grid to add 'item' property support for TypeScript
@@ -390,7 +390,24 @@ export const InviteePledges = () => {
     };
 
     const handleGenerateWhatsAppMessage = () => {
-        generateWhatsAppMessage().then(message => alert(message));
+        generateWhatsAppMessage().then(message => {
+            navigator.clipboard.writeText(message)
+                .then(() => {
+                    setSnackbar({
+                        open: true,
+                        message: 'WhatsApp message copied to clipboard!',
+                        severity: 'success'
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to copy message to clipboard:', error);
+                    setSnackbar({
+                        open: true,
+                        message: 'Failed to copy message to clipboard',
+                        severity: 'error'
+                    });
+                });
+        });
     }
 
     return (

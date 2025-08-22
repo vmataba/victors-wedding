@@ -28,7 +28,3 @@ export const viewInvitee = async (id: string): Promise<Invitee | null> => {
 export const removeInvitee = async (id: string) => {
     return await deleteFromFirebase(FirebaseNode.INVITEES, id);
 }
-
-export const generateWhatsAppMessage = async (): Promise<string> => {
-    return "hello there!"
-}
