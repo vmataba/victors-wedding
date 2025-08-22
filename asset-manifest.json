@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/victors-wedding/static/css/main.6b2ea5b9.css",
-    "main.js": "/victors-wedding/static/js/main.c2bfeb43.js",
+    "main.js": "/victors-wedding/static/js/main.a3f6941b.js",
     "static/js/453.c505c41c.chunk.js": "/victors-wedding/static/js/453.c505c41c.chunk.js",
     "static/media/great-vibes.ttf": "/victors-wedding/static/media/great-vibes.f51f1a4f2cd0c9611249.ttf",
     "static/media/background.jpg": "/victors-wedding/static/media/background.cb7fe288de3acab1bfc8.jpg",
@@ -9,11 +9,11 @@
     "static/media/whatsapp-icon.svg": "/victors-wedding/static/media/whatsapp-icon.0acc90c30bc5c5146bc5ee4c02b504f2.svg",
     "static/media/account-balance.svg": "/victors-wedding/static/media/account-balance.e17d4e9f3ae43c67b7136e2ce8d0c447.svg",
     "main.6b2ea5b9.css.map": "/victors-wedding/static/css/main.6b2ea5b9.css.map",
-    "main.c2bfeb43.js.map": "/victors-wedding/static/js/main.c2bfeb43.js.map",
+    "main.a3f6941b.js.map": "/victors-wedding/static/js/main.a3f6941b.js.map",
     "453.c505c41c.chunk.js.map": "/victors-wedding/static/js/453.c505c41c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6b2ea5b9.css",
-    "static/js/main.c2bfeb43.js"
+    "static/js/main.a3f6941b.js"
   ]
 }
