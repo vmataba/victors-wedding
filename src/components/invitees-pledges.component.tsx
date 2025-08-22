@@ -1,6 +1,6 @@
 import {Invitee} from "../models/invitee.model";
 import {useEffect, useMemo, useState} from "react";
-import {loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.service";
+import {generateWhatsAppMessage, loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.service";
 import {useAuth} from "../contexts/AuthContext";
 import {links} from "../config/links.config";
 import {viewInvitationCard} from '../services/invitation-card.service';
@@ -44,13 +44,14 @@ import {
     Phone as PhoneIcon,
     Search as SearchIcon,
     Visibility as VisibilityIcon,
-    VisibilityOff as VisibilityOffIcon
+    VisibilityOff as VisibilityOffIcon,
+    WhatsApp as MuiWhatsAppIcon
 } from '@mui/icons-material';
 import {useParams} from "react-router-dom";
 import whatsappIcon from '../assets/images/whatsapp-icon.svg';
 import whatsappBackground from '../assets/images/whatsapp-bg.png'
 import backgroundImage from '../assets/images/background.jpg';
-
+import {getEnabledCategories} from "node:trace_events";
 
 
 // Override Material UI Grid to add 'item' property support for TypeScript
@@ -388,6 +389,10 @@ export const InviteePledges = () => {
         document.body.removeChild(link);
     };
 
+    const handleGenerateWhatsAppMessage = () => {
+        generateWhatsAppMessage().then(message => alert(message));
+    }
+
     return (
         <Container maxWidth="lg" sx={{
             py: 4,
@@ -641,7 +646,7 @@ export const InviteePledges = () => {
                                 variant="outlined"
                             />
                         </Box>
-                        {isAdmin && (
+                        {isAdmin && (<>
                             <Button
                                 variant="outlined"
                                 size="small"
@@ -659,7 +664,15 @@ export const InviteePledges = () => {
                             >
                                 Export Excel
                             </Button>
-                        )}
+
+                            <Button
+                                variant="outlined"
+                                size='small'
+                                startIcon={<MuiWhatsAppIcon/>}
+                                onClick={handleGenerateWhatsAppMessage}>
+                                Export WhatsApp Message
+                            </Button>
+                        </>)}
                     </Box>
                 </Box>
             </Box>
