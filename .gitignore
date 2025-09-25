@@ -24,3 +24,5 @@ yarn-error.log*
 package-lock.json
 src/config/admin.confi.ts
 src/config/firebase.config.ts
+src/pledge-reports
+scripts

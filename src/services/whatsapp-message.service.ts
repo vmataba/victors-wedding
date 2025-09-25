@@ -11,9 +11,9 @@ export const generateWhatsAppMessage = async (): Promise<string> => {
 
     // Wedding details
     const weddingDate = '15/11/2025';
-    const committeeMeetingDate = '30/08/2025';
+    const committeeMeetingDate = '27/09/2025';
     const committeeMeetingTime = '1600';
-    const committeeMeetingLocation = 'Playtime Pub - Mwenge';
+    const committeeMeetingLocation = 'Online (Whatsapp)';
 
     // Payment details
     const paymentInstructions = [
@@ -31,7 +31,9 @@ export const generateWhatsAppMessage = async (): Promise<string> => {
     ).join('\n\n');  // Add extra line between payment methods
 
     // Separator line (wider)
-    const separator = '--------------------------------------------------------------';
+    const separator = '------------------------';
+
+    const generateSeparatorLine = (length: number): string => '-'.repeat(length);
 
     // Format pledges section - only include those with pledges
     const pledgesSection = invitees
@@ -53,7 +55,7 @@ export const generateWhatsAppMessage = async (): Promise<string> => {
             }
             
             // Format with simple numbering and improved spacing
-            return `${index + 1}.  *${invitee.name}*\n` +
+            return `${index + 1}.  *${invitee.name.trim()}*\n` +
                    `   📊  *Pledge* : TZS ${formatAmount(pledgeAmount)}\n` +
                    `   💵  *Paid* : TZS ${formatAmount(paidAmount)}\n` +
                    `   💰  *Balance* : TZS ${formatAmount(balance)}\n` +
@@ -68,9 +70,9 @@ export const generateWhatsAppMessage = async (): Promise<string> => {
 
     // Build the complete message with enhanced formatting
     const message = `🎉 *Victor Mataba's Wedding* 🎉\n\n` +
-        `Greetings! We are pleased to share this update regarding Victor's wedding preparations and your generous contributions. Thank you for your continued support.\n\n` +
+        `Greetings! We are pleased to share this update regarding Victor's wedding preparations and your generous contributions. *You are welcome for pledges and contributions*. Thank you for your continued support.\n\n` +
         `------------------------\n` +
-        `📅 *Date* : ${weddingDate}\n` +
+        `📅 *Wedding Date* : ${weddingDate}\n` +
         `------------------------\n` +
         `📋 *Next Committee Meeting*: ${committeeMeetingDate}\n` +
         `⏰ *Time*: ${committeeMeetingTime} hrs\n` +

@@ -410,6 +410,7 @@ export const InviteePledges = () => {
         });
     }
 
+    /*console.log(pledges);*/   
     return (
         <Container maxWidth="lg" sx={{
             py: 4,
@@ -576,7 +577,7 @@ export const InviteePledges = () => {
 
             {/* Pledges List */}
             {/* Floating Action Button */}
-            <Box sx={{position: 'relative', mb: 3}}>
+            {isAdmin && <Box sx={{position: 'relative', mb: 3}}>
                 <Fab
                     color="primary"
                     aria-label="add pledge"
@@ -598,7 +599,7 @@ export const InviteePledges = () => {
                 >
                     <AddIcon fontSize="small"/>
                 </Fab>
-            </Box>
+            </Box>}
 
             {/* Pledge Statistics */}
             <Box sx={{
