@@ -11,8 +11,8 @@ export const generateWhatsAppMessage = async (): Promise<string> => {
 
     // Wedding details
     const weddingDate = '15/11/2025';
-    const committeeMeetingDate = '27/09/2025';
-    const committeeMeetingTime = '1600';
+    const committeeMeetingDate = '~12/10/2025~';
+    const committeeMeetingTime = '~1600~';
     const committeeMeetingLocation = 'Online (Whatsapp)';
 
     // Payment details

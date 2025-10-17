@@ -67,7 +67,7 @@ type GridProps = React.ComponentProps<typeof MuiGrid> & {
 
 const Grid = (props: GridProps) => <MuiGrid {...props} />;
 
-export const InviteePledges = () => {
+export const Expenses = () => {
     const {authState} = useAuth();
     const isAdmin = authState.isAuthenticated && authState.admin !== null;
 
@@ -410,7 +410,7 @@ export const InviteePledges = () => {
         });
     }
 
-    console.log(pledges);   
+    /*console.log(pledges);*/   
     return (
         <Container maxWidth="lg" sx={{
             py: 4,

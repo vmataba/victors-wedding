@@ -13,6 +13,7 @@ import {InviteePledges} from './components/invitees-pledges.component';
 import MetaTags from './components/MetaTags';
 import './App.css';
 import {InvitationCard} from "./components/invitation-card/invitation-card.component";
+import { Expenses } from './components/expenses.component';
 
 
 const AppWrapper = (props: any) => {
@@ -68,6 +69,7 @@ function App() {
                                 <Route path="invitees" element={<InvitationCards/>}/>
                                 <Route path="reports" element={<InviteesReport/>}/>
                                 <Route path="pledges" element={<InviteePledges/>}/>
+                                <Route path="expenses" element={<Expenses/>}/>
                             </Route>
 
                             {/* Catch all route */}

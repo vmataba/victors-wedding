@@ -46,34 +46,22 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
     {
-        text: 'Dashboard',
-        icon: <DashboardIcon />,
-        path: '/admin/dashboard',
-        description: 'Overview and quick access'
-    },
-    {
-        text: 'Manage Admins',
-        icon: <AdminIcon />,
-        path: '/admin/admins',
-        description: 'Add, edit, and remove admins'
-    },
-    {
         text: 'Invitation Cards',
         icon: <PeopleIcon />,
         path: '/admin/invitees',
         description: 'Create and manage wedding invitation cards'
     },
     {
-        text: 'Invitees Report',
-        icon: <AssessmentIcon />,
-        path: '/admin/reports',
-        description: 'View detailed reports and analytics'
-    },
-    {
         text: 'Pledges & Gifts',
         icon: <PledgeIcon />,
         path: '/admin/pledges',
         description: 'Manage wedding pledges and gifts'
+    },
+        {
+        text: 'Expenses',
+        icon: <PledgeIcon />,
+        path: '/admin/expenses',
+        description: 'Manage wedding expenses'
     }
 ];
 
