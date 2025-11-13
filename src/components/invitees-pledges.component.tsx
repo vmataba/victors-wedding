@@ -1,11 +1,11 @@
-import {Invitee} from "../models/invitee.model";
-import {useEffect, useMemo, useState} from "react";
-import {loadInvitees, registerInvitee, updateInvitee} from "../services/invitee.service";
-import {useAuth} from "../contexts/AuthContext";
-import {links} from "../config/links.config";
-import {viewInvitationCard} from '../services/invitation-card.service';
+import { Invitee } from "../models/invitee.model";
+import { useEffect, useMemo, useState } from "react";
+import { loadInvitees, registerInvitee, updateInvitee } from "../services/invitee.service";
+import { useAuth } from "../contexts/AuthContext";
+import { links } from "../config/links.config";
+import { viewInvitationCard } from '../services/invitation-card.service';
 import MetaTags from './MetaTags';
-import {generateWhatsAppMessage} from '../services/whatsapp-message.service';
+import { generateWhatsAppMessage } from '../services/whatsapp-message.service';
 
 
 import {
@@ -38,6 +38,7 @@ import {
     Add as AddIcon,
     CheckCircle as CheckCircleIcon,
     Close as CloseIcon,
+    ContentCopy as ContentCopyIcon,
     Edit as EditIcon,
     FileDownload as FileDownloadIcon,
     Payment as PaymentIcon,
@@ -46,9 +47,10 @@ import {
     Search as SearchIcon,
     Visibility as VisibilityIcon,
     VisibilityOff as VisibilityOffIcon,
-    WhatsApp as MuiWhatsAppIcon
+    WhatsApp as MuiWhatsAppIcon,
+    CodeOutlined
 } from '@mui/icons-material';
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import whatsappIcon from '../assets/images/whatsapp-icon.svg';
 import whatsappBackground from '../assets/images/whatsapp-bg.png'
 import backgroundImage from '../assets/images/background.jpg';
@@ -68,7 +70,7 @@ type GridProps = React.ComponentProps<typeof MuiGrid> & {
 const Grid = (props: GridProps) => <MuiGrid {...props} />;
 
 export const InviteePledges = () => {
-    const {authState} = useAuth();
+    const { authState } = useAuth();
     const isAdmin = authState.isAuthenticated && authState.admin !== null;
 
     const [pledges, setPledges] = useState<Invitee[]>([]);
@@ -81,7 +83,7 @@ export const InviteePledges = () => {
     const [totalPledged, setTotalPledged] = useState(0);
     const [totalPaid, setTotalPaid] = useState(0);
     const [showFullPhone, setShowFullPhone] = useState<{ [key: string]: boolean }>({});
-    const {cardId} = useParams<{ cardId: string }>();
+    const { cardId } = useParams<{ cardId: string }>();
 
 
     const [newPledge, setNewPledge] = useState({
@@ -378,7 +380,7 @@ export const InviteePledges = () => {
         ].join('\n');
 
         // Create a blob and download link
-        const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.setAttribute('href', url);
@@ -410,11 +412,50 @@ export const InviteePledges = () => {
         });
     }
 
-    console.log(pledges);   
+    const handleGenerateJson = () => {
+        const json = JSON.stringify(pledges, null, 2);
+        navigator.clipboard.writeText(json)
+            .then(() => {
+                setSnackbar({
+                    open: true,
+                    message: 'JSON copied to clipboard!',
+                    severity: 'success'
+                });
+            })
+            .catch(error => {
+                console.error('Failed to copy JSON to clipboard:', error);
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to copy JSON to clipboard',
+                    severity: 'error'
+                });
+            });
+    }
+
+    const handleCopyInvitationLink = (inviteeId: string) => {
+        const invitationLink = `https://victors-wedding-invitation.netlify.app/${inviteeId}`;
+        navigator.clipboard.writeText(invitationLink)
+            .then(() => {
+                setSnackbar({
+                    open: true,
+                    message: 'Invitation link copied to clipboard!',
+                    severity: 'success'
+                });
+            })
+            .catch(error => {
+                console.error('Failed to copy invitation link to clipboard:', error);
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to copy invitation link',
+                    severity: 'error'
+                });
+            });
+    }
+    console.log(pledges);
     return (
         <Container maxWidth="lg" sx={{
             py: 4,
-            px: {xs: 2, sm: 3, md: 4} // Responsive padding
+            px: { xs: 2, sm: 3, md: 4 } // Responsive padding
         }}>
             {/* Dynamic meta tags for sharing the pledges page */}
             <MetaTags
@@ -456,7 +497,7 @@ export const InviteePledges = () => {
                 position: 'relative',
                 mb: 4,
                 py: 2,
-                px: {xs: 1, sm: 2},
+                px: { xs: 1, sm: 2 },
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center'
@@ -464,7 +505,7 @@ export const InviteePledges = () => {
                 {/* Decorative elements */}
                 <Box sx={{
                     position: 'absolute',
-                    left: {xs: 0, sm: '10%'},
+                    left: { xs: 0, sm: '10%' },
                     top: 0,
                     width: '20px',
                     height: '20px',
@@ -472,10 +513,10 @@ export const InviteePledges = () => {
                     borderRadius: '50%',
                     boxShadow: '0 0 10px rgba(255, 105, 180, 0.5)',
                     animation: 'sparkle 3s ease-in-out infinite alternate'
-                }}/>
+                }} />
                 <Box sx={{
                     position: 'absolute',
-                    right: {xs: 0, sm: '10%'},
+                    right: { xs: 0, sm: '10%' },
                     bottom: 0,
                     width: '20px',
                     height: '20px',
@@ -483,7 +524,7 @@ export const InviteePledges = () => {
                     borderRadius: '50%',
                     boxShadow: '0 0 10px rgba(100, 149, 237, 0.5)',
                     animation: 'sparkle 2.5s ease-in-out infinite alternate-reverse'
-                }}/>
+                }} />
 
                 <Typography
                     variant="h3"
@@ -497,9 +538,9 @@ export const InviteePledges = () => {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontWeight: 'bold',
-                        letterSpacing: {xs: '0.5px', md: '1px'},
+                        letterSpacing: { xs: '0.5px', md: '1px' },
                         textShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        fontSize: {xs: '2rem', sm: '2.5rem', md: '3rem'},
+                        fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                         position: 'relative',
                         '&::after': {
                             content: '""',
@@ -521,7 +562,7 @@ export const InviteePledges = () => {
                         mt: 2,
                         color: alpha(theme.palette.text.secondary, 0.85),
                         fontStyle: 'italic',
-                        fontSize: {xs: '0.85rem', sm: '1rem'}
+                        fontSize: { xs: '0.85rem', sm: '1rem' }
                     }}
                 >
                     Celebrate with us by contributing to our special day
@@ -531,22 +572,22 @@ export const InviteePledges = () => {
             {/* Global Styles for animations */}
             <Box sx={{
                 '@keyframes gradientShift': {
-                    '0%': {backgroundPosition: '0% 50%'},
-                    '50%': {backgroundPosition: '100% 50%'},
-                    '100%': {backgroundPosition: '0% 50%'}
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' }
                 },
                 '@keyframes sparkle': {
-                    '0%': {opacity: 0.4, transform: 'scale(0.8)'},
-                    '100%': {opacity: 1, transform: 'scale(1.2)'}
+                    '0%': { opacity: 0.4, transform: 'scale(0.8)' },
+                    '100%': { opacity: 1, transform: 'scale(1.2)' }
                 }
-            }}/>
+            }} />
 
             {/* Statistics Cards - Removed */}
 
             {/* Search Bar */}
             <Paper
                 sx={{
-                    p: {xs: 1.5, sm: 2},
+                    p: { xs: 1.5, sm: 2 },
                     mb: 3,
                     background: `linear-gradient(135deg, ${alpha('#FFFFFF', 0.9)}, ${alpha('#FFFFFF', 0.7)})`,
                     backdropFilter: 'blur(10px)',
@@ -563,7 +604,7 @@ export const InviteePledges = () => {
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <SearchIcon color="primary"/>
+                                <SearchIcon color="primary" />
                             </InputAdornment>
                         ),
                         sx: {
@@ -577,7 +618,7 @@ export const InviteePledges = () => {
 
             {/* Pledges List */}
             {/* Floating Action Button */}
-            {isAdmin && <Box sx={{position: 'relative', mb: 3}}>
+            {isAdmin && <Box sx={{ position: 'relative', mb: 3 }}>
                 <Fab
                     color="primary"
                     aria-label="add pledge"
@@ -585,8 +626,8 @@ export const InviteePledges = () => {
                     size="small"
                     sx={{
                         position: 'absolute',
-                        top: {xs: -16, sm: -20},
-                        right: {xs: 16, sm: 24},
+                        top: { xs: -16, sm: -20 },
+                        right: { xs: 16, sm: 24 },
                         background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                         '&:hover': {
                             background: `linear-gradient(45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
@@ -597,35 +638,35 @@ export const InviteePledges = () => {
                         boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
                     }}
                 >
-                    <AddIcon fontSize="small"/>
+                    <AddIcon fontSize="small" />
                 </Fab>
             </Box>}
 
             {/* Pledge Statistics */}
             <Box sx={{
-                p: {xs: 2, sm: 3},
+                p: { xs: 2, sm: 3 },
                 mb: 3,
                 display: 'flex',
-                flexDirection: {xs: 'column', sm: 'row'},
+                flexDirection: { xs: 'column', sm: 'row' },
                 justifyContent: 'space-between',
-                alignItems: {xs: 'flex-start', sm: 'center'},
+                alignItems: { xs: 'flex-start', sm: 'center' },
                 gap: 2,
                 bgcolor: 'transparent'
             }}>
                 <Box sx={{
                     display: 'flex',
-                    flexDirection: {xs: 'column', sm: 'row'},
+                    flexDirection: { xs: 'column', sm: 'row' },
                     gap: 1.5,
-                    alignItems: {xs: 'stretch', sm: 'center'},
-                    width: {xs: '100%', sm: 'auto'},
-                    mt: {md: 4, sm: 0}
+                    alignItems: { xs: 'stretch', sm: 'center' },
+                    width: { xs: '100%', sm: 'auto' },
+                    mt: { md: 4, sm: 0 }
                 }}>
                     <Typography
                         variant="body1"
                         sx={{
                             fontWeight: 'bold',
                             color: theme.palette.text.primary,
-                            mb: {xs: 1, sm: 0}
+                            mb: { xs: 1, sm: 0 }
                         }}
                     >
                         Showing {filteredPledges.length} of {pledges.length} Pledges
@@ -633,34 +674,34 @@ export const InviteePledges = () => {
 
                     <Box sx={{
                         display: 'flex',
-                        flexDirection: {xs: 'column', sm: 'row'},
+                        flexDirection: { xs: 'column', sm: 'row' },
                         gap: 1,
-                        alignItems: {xs: 'flex-start', sm: 'center'},
-                        mt: {md: 4, sm: 0}
+                        alignItems: { xs: 'flex-start', sm: 'center' },
+                        mt: { md: 4, sm: 0 }
                     }}>
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body2"
-                                        sx={{mr: 1, whiteSpace: 'nowrap', fontSize: {xs: '0.8rem', sm: '0.875rem'}}}>
+                                sx={{ mr: 1, whiteSpace: 'nowrap', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                                 Total Pledged:
                             </Typography>
                             <Chip
-                                label={totalPledged.toLocaleString('en-US', {style: 'currency', currency: 'TZS'})}
+                                label={totalPledged.toLocaleString('en-US', { style: 'currency', currency: 'TZS' })}
                                 color="primary"
                                 size="small"
-                                sx={{fontWeight: 'bold'}}
+                                sx={{ fontWeight: 'bold' }}
                                 variant="outlined"
                             />
                         </Box>
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body2"
-                                        sx={{mr: 1, whiteSpace: 'nowrap', fontSize: {xs: '0.8rem', sm: '0.875rem'}}}>
+                                sx={{ mr: 1, whiteSpace: 'nowrap', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                                 Total Paid:
                             </Typography>
                             <Chip
-                                label={totalPaid.toLocaleString('en-US', {style: 'currency', currency: 'TZS'})}
+                                label={totalPaid.toLocaleString('en-US', { style: 'currency', currency: 'TZS' })}
                                 color="success"
                                 size="small"
-                                sx={{fontWeight: 'bold'}}
+                                sx={{ fontWeight: 'bold' }}
                                 variant="outlined"
                             />
                         </Box>
@@ -668,10 +709,10 @@ export const InviteePledges = () => {
                             <Button
                                 variant="outlined"
                                 size="small"
-                                startIcon={<FileDownloadIcon/>}
+                                startIcon={<FileDownloadIcon />}
                                 onClick={handleExportToCSV}
                                 sx={{
-                                    ml: {xs: 0, sm: 2},
+                                    ml: { xs: 0, sm: 2 },
                                     borderColor: alpha(theme.palette.success.main, 0.5),
                                     color: theme.palette.success.main,
                                     '&:hover': {
@@ -686,16 +727,24 @@ export const InviteePledges = () => {
                             <Button
                                 variant="outlined"
                                 size='small'
-                                startIcon={<MuiWhatsAppIcon/>}
+                                startIcon={<MuiWhatsAppIcon />}
                                 onClick={handleGenerateWhatsAppMessage}>
                                 Export WhatsApp Message
+                            </Button>
+
+                            <Button
+                                variant="outlined"
+                                size='small'
+                                startIcon={<CodeOutlined /> }
+                                onClick={handleGenerateJson}>
+                                Export JSON
                             </Button>
                         </>)}
                     </Box>
                 </Box>
             </Box>
 
-            <Box sx={{p: {xs: 1, sm: 2}, display: 'grid', gap: {xs: 2, sm: 2}, width: '100%'}}>
+            <Box sx={{ p: { xs: 1, sm: 2 }, display: 'grid', gap: { xs: 2, sm: 2 }, width: '100%' }}>
                 {filteredPledges.map((pledge, index) => {
                     const progressPercentage = getProgressPercentage(pledge.paidAmount || 0, pledge.pledgeAmount || 0);
                     const progressColor = getProgressColor(progressPercentage);
@@ -705,7 +754,7 @@ export const InviteePledges = () => {
                             key={pledge.id || index}
                             elevation={0}
                             sx={{
-                                p: {xs: 1.5, sm: 2},
+                                p: { xs: 1.5, sm: 2 },
                                 borderRadius: 1.5,
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -731,31 +780,31 @@ export const InviteePledges = () => {
                                 background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                                 borderTopLeftRadius: 1.5,
                                 borderBottomLeftRadius: 1.5
-                            }}/>
+                            }} />
 
                             <Box sx={{
                                 display: 'flex',
-                                flexDirection: {xs: 'column', sm: 'row'},
-                                alignItems: {xs: 'flex-start', sm: 'center'},
-                                gap: {xs: 2, sm: 2},
+                                flexDirection: { xs: 'column', sm: 'row' },
+                                alignItems: { xs: 'flex-start', sm: 'center' },
+                                gap: { xs: 2, sm: 2 },
                                 width: '100%',
-                                p: {xs: 2, sm: 2}
+                                p: { xs: 2, sm: 2 }
                             }}>
                                 {/* Avatar and Name */}
                                 <Box sx={{
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 2,
-                                    flex: {xs: '1 1 100%', sm: '0 0 auto'},
-                                    width: {xs: '100%', sm: 'auto'},
-                                    pb: {xs: 1, sm: 0}
+                                    flex: { xs: '1 1 100%', sm: '0 0 auto' },
+                                    width: { xs: '100%', sm: 'auto' },
+                                    pb: { xs: 1, sm: 0 }
                                 }}>
                                     <Avatar
                                         sx={{
                                             background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                                            width: {xs: 40, sm: 36},
-                                            height: {xs: 40, sm: 36},
-                                            fontSize: {xs: '1rem', sm: '0.9rem'},
+                                            width: { xs: 40, sm: 36 },
+                                            height: { xs: 40, sm: 36 },
+                                            fontSize: { xs: '1rem', sm: '0.9rem' },
                                             fontWeight: 'bold',
                                             boxShadow: {
                                                 xs: `0 2px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
@@ -765,7 +814,7 @@ export const InviteePledges = () => {
                                     >
                                         {pledge.name.charAt(0).toUpperCase()}
                                     </Avatar>
-                                    <Box sx={{minWidth: 0, flex: 1}}>
+                                    <Box sx={{ minWidth: 0, flex: 1 }}>
                                         <Typography
                                             variant="subtitle2"
                                             sx={{
@@ -792,9 +841,9 @@ export const InviteePledges = () => {
                                                     mt: 0.2
                                                 }}
                                             >
-                                                <PhoneIcon sx={{fontSize: '0.7rem'}}/>
+                                                <PhoneIcon sx={{ fontSize: '0.7rem' }} />
                                                 {isAdmin ? (
-                                                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                                         {showFullPhone[pledge.id] ? pledge.phone : `${pledge.phone.substring(0, 3)}***`}
                                                         <IconButton
                                                             size="small"
@@ -802,11 +851,11 @@ export const InviteePledges = () => {
                                                                 e.stopPropagation();
                                                                 togglePhoneVisibility(pledge.id);
                                                             }}
-                                                            sx={{p: 0.2}}
+                                                            sx={{ p: 0.2 }}
                                                         >
                                                             {showFullPhone[pledge.id] ?
-                                                                <VisibilityOffIcon sx={{fontSize: '0.7rem'}}/> :
-                                                                <VisibilityIcon sx={{fontSize: '0.7rem'}}/>
+                                                                <VisibilityOffIcon sx={{ fontSize: '0.7rem' }} /> :
+                                                                <VisibilityIcon sx={{ fontSize: '0.7rem' }} />
                                                             }
                                                         </IconButton>
                                                     </Box>
@@ -821,25 +870,25 @@ export const InviteePledges = () => {
                                 {/* Pledge Amount and Payment Info - Row on mobile */}
                                 <Box sx={{
                                     display: 'flex',
-                                    flexDirection: {xs: 'row', sm: 'row'},
+                                    flexDirection: { xs: 'row', sm: 'row' },
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    gap: {xs: 2, sm: 2},
-                                    width: {xs: '100%', sm: 'auto'},
-                                    mt: {xs: 1, sm: 0}
+                                    gap: { xs: 2, sm: 2 },
+                                    width: { xs: '100%', sm: 'auto' },
+                                    mt: { xs: 1, sm: 0 }
                                 }}>
                                     {/* Pledge Amount */}
                                     <Box sx={{
                                         flex: '1 1 auto',
-                                        textAlign: {xs: 'left', sm: 'right'},
-                                        minWidth: {xs: 'auto', sm: 100}
+                                        textAlign: { xs: 'left', sm: 'right' },
+                                        minWidth: { xs: 'auto', sm: 100 }
                                     }}>
                                         <Typography
                                             variant="body2"
                                             sx={{
                                                 fontWeight: 600,
                                                 color: theme.palette.primary.main,
-                                                fontSize: {xs: '1rem', sm: '0.9rem'},
+                                                fontSize: { xs: '1rem', sm: '0.9rem' },
                                                 lineHeight: 1.2
                                             }}
                                         >
@@ -863,13 +912,13 @@ export const InviteePledges = () => {
 
                                     {/* Paid Amount - Show on mobile */}
                                     <Box
-                                        sx={{display: {xs: 'block', sm: 'none'}, flex: '1 1 auto', textAlign: 'right'}}>
+                                        sx={{ display: { xs: 'block', sm: 'none' }, flex: '1 1 auto', textAlign: 'right' }}>
                                         <Typography
                                             variant="body2"
                                             sx={{
                                                 fontWeight: 600,
                                                 color: theme.palette.success.main,
-                                                fontSize: {xs: '1rem', sm: '0.9rem'},
+                                                fontSize: { xs: '1rem', sm: '0.9rem' },
                                                 lineHeight: 1.2
                                             }}
                                         >
@@ -893,19 +942,19 @@ export const InviteePledges = () => {
                                 </Box>
 
                                 {/* Progress and Actions */}
-                                <Box sx={{flex: 1, minWidth: {xs: '100%', sm: 120}, mt: {xs: 2, sm: 0}}}>
+                                <Box sx={{ flex: 1, minWidth: { xs: '100%', sm: 120 }, mt: { xs: 2, sm: 0 } }}>
                                     <Box sx={{
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'space-between',
                                         mb: 0.8
                                     }}>
-                                        <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                             <Typography
                                                 variant="caption"
                                                 sx={{
                                                     fontWeight: 500,
-                                                    fontSize: {xs: '0.8rem', sm: '0.75rem'},
+                                                    fontSize: { xs: '0.8rem', sm: '0.75rem' },
                                                     color: progressColor === 'success' ? theme.palette.success.main :
                                                         progressColor === 'warning' ? theme.palette.warning.main :
                                                             theme.palette.error.main
@@ -922,7 +971,7 @@ export const InviteePledges = () => {
                                                 />
                                             )}
                                         </Box>
-                                        <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                             {isAdmin && <IconButton
                                                 size="small"
                                                 aria-label="edit pledge"
@@ -931,15 +980,15 @@ export const InviteePledges = () => {
                                                     handleEditPledge(pledge);
                                                 }}
                                                 sx={{
-                                                    width: {xs: 32, sm: 28},
-                                                    height: {xs: 32, sm: 28},
+                                                    width: { xs: 32, sm: 28 },
+                                                    height: { xs: 32, sm: 28 },
                                                     bgcolor: alpha(theme.palette.primary.main, 0.08),
                                                     '&:hover': {
                                                         bgcolor: alpha(theme.palette.primary.main, 0.15)
                                                     }
                                                 }}
                                             >
-                                                <EditIcon sx={{fontSize: {xs: '0.9rem', sm: '0.8rem'}}}/>
+                                                <EditIcon sx={{ fontSize: { xs: '0.9rem', sm: '0.8rem' } }} />
                                             </IconButton>}
 
                                             {isAdmin && (
@@ -952,15 +1001,36 @@ export const InviteePledges = () => {
                                                         setPaymentDialog(true);
                                                     }}
                                                     sx={{
-                                                        width: {xs: 32, sm: 28},
-                                                        height: {xs: 32, sm: 28},
+                                                        width: { xs: 32, sm: 28 },
+                                                        height: { xs: 32, sm: 28 },
                                                         bgcolor: alpha(theme.palette.success.main, 0.08),
                                                         '&:hover': {
                                                             bgcolor: alpha(theme.palette.success.main, 0.15)
                                                         }
                                                     }}
                                                 >
-                                                    <PaymentIcon sx={{fontSize: {xs: '0.9rem', sm: '0.8rem'}}}/>
+                                                    <PaymentIcon sx={{ fontSize: { xs: '0.9rem', sm: '0.8rem' } }} />
+                                                </IconButton>
+                                            )}
+
+                                            {isAdmin && (pledge.paidAmount || 0) >= 50000 && (
+                                                <IconButton
+                                                    size="small"
+                                                    aria-label="copy invitation link"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleCopyInvitationLink(pledge.id);
+                                                    }}
+                                                    sx={{
+                                                        width: { xs: 32, sm: 28 },
+                                                        height: { xs: 32, sm: 28 },
+                                                        bgcolor: alpha(theme.palette.info.main, 0.08),
+                                                        '&:hover': {
+                                                            bgcolor: alpha(theme.palette.info.main, 0.15)
+                                                        }
+                                                    }}
+                                                >
+                                                    <ContentCopyIcon sx={{ fontSize: { xs: '0.9rem', sm: '0.8rem' } }} />
                                                 </IconButton>
                                             )}
                                         </Box>
@@ -970,7 +1040,7 @@ export const InviteePledges = () => {
                                         value={Math.min(progressPercentage, 100)}
                                         color={progressColor}
                                         sx={{
-                                            height: {xs: 8, sm: 6},
+                                            height: { xs: 8, sm: 6 },
                                             borderRadius: 3,
                                             backgroundColor: alpha(theme.palette.grey[300], 0.2),
                                             '& .MuiLinearProgress-bar': {
@@ -985,7 +1055,7 @@ export const InviteePledges = () => {
                                     <Typography
                                         variant="caption"
                                         sx={{
-                                            display: {xs: 'none', sm: 'block'},
+                                            display: { xs: 'none', sm: 'block' },
                                             textAlign: 'right',
                                             mt: 0.5,
                                             fontSize: '0.7rem',
@@ -1007,7 +1077,7 @@ export const InviteePledges = () => {
             </Box>
 
             {filteredPledges.length === 0 && (
-                <Box sx={{p: 8, textAlign: 'center'}}>
+                <Box sx={{ p: 8, textAlign: 'center' }}>
                     <Box
                         sx={{
                             width: 120,
@@ -1055,11 +1125,11 @@ export const InviteePledges = () => {
             {/* Add global animation keyframes */}
             <Box sx={{
                 '@keyframes pulse': {
-                    '0%': {transform: 'scale(1)', opacity: 0.8},
-                    '50%': {transform: 'scale(1.05)', opacity: 1},
-                    '100%': {transform: 'scale(1)', opacity: 0.8}
+                    '0%': { transform: 'scale(1)', opacity: 0.8 },
+                    '50%': { transform: 'scale(1.05)', opacity: 1 },
+                    '100%': { transform: 'scale(1)', opacity: 0.8 }
                 }
-            }}/>
+            }} />
 
 
             {/* Add Pledge Dialog */}
@@ -1074,10 +1144,10 @@ export const InviteePledges = () => {
                         background: `linear-gradient(135deg, ${alpha('#FFFFFF', 0.95)}, ${alpha('#FFFFFF', 0.9)})`,
                         backdropFilter: 'blur(10px)',
                         border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                        borderRadius: {xs: 0, sm: 3}, // No border radius on mobile fullscreen
-                        m: {xs: 0, sm: 2}, // No margin on mobile fullscreen
+                        borderRadius: { xs: 0, sm: 3 }, // No border radius on mobile fullscreen
+                        m: { xs: 0, sm: 2 }, // No margin on mobile fullscreen
                         width: '100%',
-                        height: {xs: '100%', sm: 'auto'}
+                        height: { xs: '100%', sm: 'auto' }
                     }
                 }}
             >
@@ -1087,13 +1157,13 @@ export const InviteePledges = () => {
                     alignItems: 'center',
                     background: `linear-gradient(45deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
                     borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                    py: {xs: 2, sm: 2.5},
-                    px: {xs: 2, sm: 3}
+                    py: { xs: 2, sm: 2.5 },
+                    px: { xs: 2, sm: 3 }
                 }}>
                     <Typography
                         sx={{
                             fontWeight: 'bold',
-                            fontSize: {xs: '1.1rem', sm: '1.25rem'}
+                            fontSize: { xs: '1.1rem', sm: '1.25rem' }
                         }}
                     >
                         {isEditing ? 'Update Pledge' : 'Add New Pledge'}
@@ -1107,34 +1177,34 @@ export const InviteePledges = () => {
                             }
                         }}
                     >
-                        <CloseIcon/>
+                        <CloseIcon />
                     </IconButton>
                 </DialogTitle>
 
                 <DialogContent>
                     <Grid spacing={3}>
-                        <Grid item xs={12} sx={{mt: 2}}>
+                        <Grid item xs={12} sx={{ mt: 2 }}>
                             <TextField
                                 placeholder={'Enter your name'}
                                 fullWidth
                                 label="Name"
                                 variant="outlined"
                                 value={newPledge.name}
-                                onChange={(e) => setNewPledge({...newPledge, name: e.target.value})}
+                                onChange={(e) => setNewPledge({ ...newPledge, name: e.target.value })}
                                 error={!!formErrors.name}
                                 helperText={formErrors.name}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <PersonIcon color="primary"/>
+                                            <PersonIcon color="primary" />
                                         </InputAdornment>
                                     )
                                 }}
                             />
                         </Grid>
 
-                        <Grid item xs={12} sx={{mt: 2}}>
-                            <Box sx={{mb: 1, ml: 1}}>
+                        <Grid item xs={12} sx={{ mt: 2 }}>
+                            <Box sx={{ mb: 1, ml: 1 }}>
                                 <Typography variant="subtitle1" color="primary" fontWeight="medium">
                                     Phone Number
                                 </Typography>
@@ -1144,21 +1214,21 @@ export const InviteePledges = () => {
                                 placeholder="Ex: 0755 XXX XXX"
                                 variant="outlined"
                                 value={newPledge.phone}
-                                onChange={(e) => setNewPledge({...newPledge, phone: e.target.value})}
+                                onChange={(e) => setNewPledge({ ...newPledge, phone: e.target.value })}
                                 error={!!formErrors.phone}
                                 helperText={formErrors.phone}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <PhoneIcon color="primary"/>
+                                            <PhoneIcon color="primary" />
                                         </InputAdornment>
                                     )
                                 }}
                             />
                         </Grid>
 
-                        <Grid item xs={12} sx={{mt: 2}}>
-                            <Box sx={{mb: 1, ml: 1}}>
+                        <Grid item xs={12} sx={{ mt: 2 }}>
+                            <Box sx={{ mb: 1, ml: 1 }}>
                                 <Typography variant="subtitle1" color="primary" fontWeight="medium">
                                     Pledge Amount (TZS)
                                 </Typography>
@@ -1197,8 +1267,8 @@ export const InviteePledges = () => {
                         </Grid>
 
                         {isAdmin && (
-                            <Grid item xs={12} sx={{mt: 2}}>
-                                <Box sx={{mb: 1, ml: 1}}>
+                            <Grid item xs={12} sx={{ mt: 2 }}>
+                                <Box sx={{ mb: 1, ml: 1 }}>
                                     <Typography variant="subtitle1" color="success" fontWeight="medium">
                                         Paid Amount (TZS)
                                     </Typography>
@@ -1235,11 +1305,11 @@ export const InviteePledges = () => {
                     </Grid>
                 </DialogContent>
 
-                <DialogActions sx={{p: 3, pt: 1}}>
+                <DialogActions sx={{ p: 3, pt: 1 }}>
                     <Button
                         onClick={handleCloseDialog}
                         variant="outlined"
-                        sx={{mr: 1}}
+                        sx={{ mr: 1 }}
                         disabled={isLoading}
                     >
                         Cancel
@@ -1248,7 +1318,7 @@ export const InviteePledges = () => {
                         onClick={handleAddOrUpdatePledge}
                         variant="contained"
                         disabled={isLoading || !isFormValid}
-                        startIcon={isLoading ? <CircularProgress size={20} color="inherit"/> : null}
+                        startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
                         sx={{
                             background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                             '&:hover': {
@@ -1298,7 +1368,7 @@ export const InviteePledges = () => {
                                 gap: 1
                             }}
                         >
-                            <PaymentIcon fontSize="small"/>
+                            <PaymentIcon fontSize="small" />
                             Add Payment
                         </Typography>
                         <IconButton
@@ -1310,18 +1380,18 @@ export const InviteePledges = () => {
                                 }
                             }}
                         >
-                            <CloseIcon/>
+                            <CloseIcon />
                         </IconButton>
                     </DialogTitle>
 
-                    <DialogContent sx={{pt: 3}}>
+                    <DialogContent sx={{ pt: 3 }}>
                         {selectedPledge && (
                             <>
-                                <Box sx={{mb: 3}}>
+                                <Box sx={{ mb: 3 }}>
                                     <Typography variant="subtitle1" fontWeight="medium">
                                         {selectedPledge.name}
                                     </Typography>
-                                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 1}}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
                                         <Typography variant="body2" color="text.secondary">
                                             Pledged Amount:
                                         </Typography>
@@ -1334,7 +1404,7 @@ export const InviteePledges = () => {
                                             })}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 0.5}}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
                                         <Typography variant="body2" color="text.secondary">
                                             Paid Amount:
                                         </Typography>
@@ -1347,7 +1417,7 @@ export const InviteePledges = () => {
                                             })}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 0.5}}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
                                         <Typography variant="body2" color="text.secondary">
                                             Balance:
                                         </Typography>
@@ -1362,8 +1432,8 @@ export const InviteePledges = () => {
                                     </Box>
                                 </Box>
 
-                                <Box sx={{mt: 2}}>
-                                    <Typography variant="subtitle2" color="primary" sx={{mb: 1, ml: 1}}>
+                                <Box sx={{ mt: 2 }}>
+                                    <Typography variant="subtitle2" color="primary" sx={{ mb: 1, ml: 1 }}>
                                         Payment Amount (TZS)
                                     </Typography>
                                     <TextField
@@ -1393,8 +1463,8 @@ export const InviteePledges = () => {
                                 </Box>
 
                                 {selectedPledge.paymentInstallments && selectedPledge.paymentInstallments.length > 0 && (
-                                    <Box sx={{mt: 3}}>
-                                        <Typography variant="subtitle2" sx={{mb: 1}}>
+                                    <Box sx={{ mt: 3 }}>
+                                        <Typography variant="subtitle2" sx={{ mb: 1 }}>
                                             Payment History
                                         </Typography>
                                         <List sx={{
@@ -1404,7 +1474,7 @@ export const InviteePledges = () => {
                                             overflow: 'auto'
                                         }}>
                                             {selectedPledge.paymentInstallments.map((payment, index) => (
-                                                <ListItem key={index} sx={{py: 0.5}}>
+                                                <ListItem key={index} sx={{ py: 0.5 }}>
                                                     <Box sx={{
                                                         display: 'flex',
                                                         justifyContent: 'space-between',
@@ -1431,11 +1501,11 @@ export const InviteePledges = () => {
                         )}
                     </DialogContent>
 
-                    <DialogActions sx={{p: 3, pt: 1}}>
+                    <DialogActions sx={{ p: 3, pt: 1 }}>
                         <Button
                             onClick={() => setPaymentDialog(false)}
                             variant="outlined"
-                            sx={{mr: 1}}
+                            sx={{ mr: 1 }}
                             disabled={isLoading}
                         >
                             Cancel
@@ -1444,7 +1514,7 @@ export const InviteePledges = () => {
                             onClick={handleAddPayment}
                             variant="contained"
                             disabled={isLoading || newPayment <= 0}
-                            startIcon={isLoading ? <CircularProgress size={20} color="inherit"/> : null}
+                            startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
                             sx={{
                                 background: `linear-gradient(45deg, ${theme.palette.success.main}, ${theme.palette.primary.main})`,
                                 '&:hover': {
@@ -1462,11 +1532,11 @@ export const InviteePledges = () => {
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={6000}
-                onClose={() => setSnackbar(prev => ({...prev, open: false}))}
-                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
                 <Alert
-                    onClose={() => setSnackbar(prev => ({...prev, open: false}))}
+                    onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
                     severity={snackbar.severity}
                     sx={{
                         width: '100%',
@@ -1477,7 +1547,7 @@ export const InviteePledges = () => {
                                 : 'none',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                     }}
-                    icon={snackbar.severity === 'success' ? <CheckCircleIcon/> : undefined}
+                    icon={snackbar.severity === 'success' ? <CheckCircleIcon /> : undefined}
                     variant="filled"
                 >
                     {snackbar.message}
@@ -1520,17 +1590,17 @@ export const InviteePledges = () => {
                     position: 'relative',
                     zIndex: 1
                 }}>
-                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1}}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
                         <img
                             src={whatsappIcon}
                             alt="WhatsApp"
-                            style={{width: '32px', height: '32px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'}}
+                            style={{ width: '32px', height: '32px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}
                         />
                         Join Our WhatsApp Group
                     </Box>
                 </DialogTitle>
-                <DialogContent sx={{position: 'relative', zIndex: 1}}>
-                    <Typography variant="body1" sx={{textAlign: 'center', mb: 2}}>
+                <DialogContent sx={{ position: 'relative', zIndex: 1 }}>
+                    <Typography variant="body1" sx={{ textAlign: 'center', mb: 2 }}>
                         Thank you for your pledge! Join our WhatsApp group to stay updated about the wedding
                         preparations and connect with other guests.
                     </Typography>
@@ -1546,7 +1616,7 @@ export const InviteePledges = () => {
                             border: '3px solid white'
                         }
                     }}>
-                        <img src={backgroundImage} alt="Wedding"/>
+                        <img src={backgroundImage} alt="Wedding" />
                     </Box>
                 </DialogContent>
                 <DialogActions sx={{
@@ -1586,7 +1656,7 @@ export const InviteePledges = () => {
                         startIcon={<img
                             src={whatsappIcon}
                             alt="WhatsApp"
-                            style={{width: '20px', height: '20px', filter: 'brightness(0) invert(1)'}}
+                            style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }}
                         />}
                     >
                         Join Now
