@@ -7,6 +7,7 @@ export interface Invitee {
     paidAmount?: number
     registrationType?: RegistrationType
     adminId?: string
+    treatAsDouble?: boolean
 }
 
 export enum RegistrationType {

@@ -22,13 +22,17 @@ import {
     DialogContent,
     DialogTitle,
     Fab,
+    FormControl,
     Grid as MuiGrid,
     IconButton,
     InputAdornment,
+    InputLabel,
     LinearProgress,
     List,
     ListItem,
+    MenuItem,
     Paper,
+    Select,
     Snackbar,
     TextField,
     Typography,
@@ -76,6 +80,8 @@ export const InviteePledges = () => {
     const [pledges, setPledges] = useState<Invitee[]>([]);
     const [filteredPledges, setFilteredPledges] = useState<Invitee[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [amountFilter, setAmountFilter] = useState<'all' | 'below100k' | 'above100k'>('all');
+    const [treatAsDoubleFilter, setTreatAsDoubleFilter] = useState<'all' | 'true' | 'false'>('all');
     const [openDialog, setOpenDialog] = useState(false);
     const [paymentDialog, setPaymentDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +98,8 @@ export const InviteePledges = () => {
         phone: '',
         pledgeAmount: 0,
         paidAmount: 0,
-        paymentInstallments: [] as number[]
+        paymentInstallments: [] as number[],
+        treatAsDouble: false
     });
 
     const [selectedPledge, setSelectedPledge] = useState<Invitee | null>(null);
@@ -153,16 +160,31 @@ export const InviteePledges = () => {
     }, []);
 
     useEffect(() => {
-        const filtered = pledges.filter(pledge =>
+        let filtered = pledges.filter(pledge =>
             pledge.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             pledge.phone?.toLowerCase().includes(searchTerm.toLowerCase())
         );
+
+        // Apply amount filter
+        if (amountFilter === 'below100k') {
+            filtered = filtered.filter(pledge => (pledge.paidAmount || 0) <= 100000);
+        } else if (amountFilter === 'above100k') {
+            filtered = filtered.filter(pledge => (pledge.paidAmount || 0) > 100000);
+        }
+
+        // Apply treatAsDouble filter
+        if (treatAsDoubleFilter === 'true') {
+            filtered = filtered.filter(pledge => pledge.treatAsDouble === true);
+        } else if (treatAsDoubleFilter === 'false') {
+            filtered = filtered.filter(pledge => !pledge.treatAsDouble);
+        }
+
         // Maintain sorting by pledgeAmount in descending order
         const sortedFiltered = [...filtered].sort((a, b) =>
             (b.pledgeAmount || 0) - (a.pledgeAmount || 0)
         );
         setFilteredPledges(sortedFiltered);
-    }, [searchTerm, pledges]);
+    }, [searchTerm, pledges, amountFilter, treatAsDoubleFilter]);
 
     useEffect(() => {
         const totalPledged = pledges.reduce((acc, pledge) => acc + (pledge.pledgeAmount || 0), 0);
@@ -222,7 +244,8 @@ export const InviteePledges = () => {
             phone: '',
             pledgeAmount: 0,
             paidAmount: 0,
-            paymentInstallments: []
+            paymentInstallments: [],
+            treatAsDouble: false
         });
         setFormErrors({
             name: '',
@@ -240,7 +263,8 @@ export const InviteePledges = () => {
             phone: pledge.phone || '',
             pledgeAmount: pledge.pledgeAmount || 0,
             paidAmount: pledge.paidAmount || 0,
-            paymentInstallments: pledge.paymentInstallments || []
+            paymentInstallments: pledge.paymentInstallments || [],
+            treatAsDouble: pledge.treatAsDouble || false
         });
         setOpenDialog(true);
     };
@@ -451,6 +475,38 @@ export const InviteePledges = () => {
                 });
             });
     }
+
+    // Function to toggle treatAsDouble for a pledge
+    const handleToggleTreatAsDouble = async (pledge: Invitee) => {
+        setIsLoading(true);
+        try {
+            const updatedPledge: Invitee = {
+                ...pledge,
+                treatAsDouble: !pledge.treatAsDouble
+            };
+
+            await updateInvitee(updatedPledge);
+
+            // Update the pledges state
+            setPledges(pledges.map(p => p.id === updatedPledge.id ? updatedPledge : p));
+
+            setSnackbar({
+                open: true,
+                message: `Treat as double ${updatedPledge.treatAsDouble ? 'enabled' : 'disabled'}!`,
+                severity: 'success'
+            });
+        } catch (error) {
+            console.error('Error toggling treat as double:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to update. Please try again.',
+                severity: 'error'
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     console.log(pledges);
     return (
         <Container maxWidth="lg" sx={{
@@ -584,7 +640,7 @@ export const InviteePledges = () => {
 
             {/* Statistics Cards - Removed */}
 
-            {/* Search Bar */}
+            {/* Search Bar and Filters */}
             <Paper
                 sx={{
                     p: { xs: 1.5, sm: 2 },
@@ -595,25 +651,92 @@ export const InviteePledges = () => {
                     borderRadius: 3
                 }}
             >
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Search by name or phone number..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon color="primary" />
-                            </InputAdornment>
-                        ),
-                        sx: {
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 2
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Search by name or phone number..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon color="primary" />
+                                </InputAdornment>
+                            ),
+                            sx: {
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: 2
+                                }
                             }
-                        }
-                    }}
-                />
+                        }}
+                    />
+                    
+                    {/* Filter Controls */}
+                    <Box sx={{ 
+                        display: 'flex', 
+                        gap: 2, 
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        alignItems: { xs: 'stretch', sm: 'center' }
+                    }}>
+                        <FormControl 
+                            size="small" 
+                            sx={{ 
+                                minWidth: { xs: '100%', sm: 200 },
+                                flex: { xs: 1, sm: 'none' }
+                            }}
+                        >
+                            <InputLabel id="amount-filter-label">Amount Paid</InputLabel>
+                            <Select
+                                labelId="amount-filter-label"
+                                value={amountFilter}
+                                label="Amount Paid"
+                                onChange={(e) => setAmountFilter(e.target.value as 'all' | 'below100k' | 'above100k')}
+                            >
+                                <MenuItem value="all">All Amounts</MenuItem>
+                                <MenuItem value="below100k">≤ 100,000</MenuItem>
+                                <MenuItem value="above100k">&gt; 100,000</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl 
+                            size="small" 
+                            sx={{ 
+                                minWidth: { xs: '100%', sm: 200 },
+                                flex: { xs: 1, sm: 'none' }
+                            }}
+                        >
+                            <InputLabel id="treat-double-filter-label">Treat as Double</InputLabel>
+                            <Select
+                                labelId="treat-double-filter-label"
+                                value={treatAsDoubleFilter}
+                                label="Treat as Double"
+                                onChange={(e) => setTreatAsDoubleFilter(e.target.value as 'all' | 'true' | 'false')}
+                            >
+                                <MenuItem value="all">All</MenuItem>
+                                <MenuItem value="true">Yes (D enabled)</MenuItem>
+                                <MenuItem value="false">No (D disabled)</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        {(amountFilter !== 'all' || treatAsDoubleFilter !== 'all') && (
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                onClick={() => {
+                                    setAmountFilter('all');
+                                    setTreatAsDoubleFilter('all');
+                                }}
+                                sx={{ 
+                                    minWidth: { xs: '100%', sm: 'auto' },
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Clear Filters
+                            </Button>
+                        )}
+                    </Box>
+                </Box>
             </Paper>
 
             {/* Pledges List */}
@@ -1031,6 +1154,44 @@ export const InviteePledges = () => {
                                                     }}
                                                 >
                                                     <ContentCopyIcon sx={{ fontSize: { xs: '0.9rem', sm: '0.8rem' } }} />
+                                                </IconButton>
+                                            )}
+
+                                            {isAdmin && (pledge.paidAmount || 0) >= 50000 && (pledge.paidAmount || 0) <= 100000 && (
+                                                <IconButton
+                                                    size="small"
+                                                    aria-label="treat as double"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleToggleTreatAsDouble(pledge);
+                                                    }}
+                                                    sx={{
+                                                        width: { xs: 32, sm: 28 },
+                                                        height: { xs: 32, sm: 28 },
+                                                        bgcolor: pledge.treatAsDouble 
+                                                            ? alpha(theme.palette.success.main, 0.15)
+                                                            : alpha(theme.palette.grey[400], 0.1),
+                                                        '&:hover': {
+                                                            bgcolor: pledge.treatAsDouble
+                                                                ? alpha(theme.palette.success.main, 0.25)
+                                                                : alpha(theme.palette.grey[400], 0.2)
+                                                        },
+                                                        border: pledge.treatAsDouble 
+                                                            ? `2px solid ${theme.palette.success.main}`
+                                                            : `1px solid ${alpha(theme.palette.grey[400], 0.3)}`
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        sx={{
+                                                            fontSize: { xs: '0.9rem', sm: '0.8rem' },
+                                                            fontWeight: 'bold',
+                                                            color: pledge.treatAsDouble 
+                                                                ? theme.palette.success.main
+                                                                : theme.palette.grey[600]
+                                                        }}
+                                                    >
+                                                        D
+                                                    </Typography>
                                                 </IconButton>
                                             )}
                                         </Box>
